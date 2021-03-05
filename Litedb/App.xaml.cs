@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Litedb.View;
+using Litedb.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,13 @@ namespace Litedb
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            HomeWindow window = new HomeWindow();
+            UserVM VM = new UserVM();
+            window.DataContext = VM;
+            window.Show();
+        }
     }
 }

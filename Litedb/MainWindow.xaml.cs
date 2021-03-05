@@ -114,9 +114,9 @@ namespace Litedb
             using (var db = new LiteDatabase(strcon))
             {
                 var customerdb = db.GetCollection<Customer>("customers");
-                var result = customerdb.Find(x => x.Id == id).FirstOrDefault();
                 try
                 {
+                    var result = customerdb.Find(x => x.Id == id).First();
                     Customer customer = result;
                     return customer;
                 }
@@ -139,9 +139,9 @@ namespace Litedb
             using (var db = new LiteDatabase(strcon))
             {
                 var customerdb = db.GetCollection<Customer>("customers");
-                var result = customerdb.Find(x => x.Id == id).FirstOrDefault();
                 try
                 {
+                    var result = customerdb.Find(x => x.Id == id).First();
                     Customer customer = result;
                     customer.Name = tb_name.Text;
                     customer.Phone = tb_phone.Text;
@@ -162,11 +162,10 @@ namespace Litedb
             using (var db = new LiteDatabase(strcon))
             {
                 var customerdb = db.GetCollection<Customer>("customers");
-                var result = customerdb.Find(x => x.Id == id).FirstOrDefault();
                 try
                 {
+                    var result = customerdb.Find(x => x.Id == id).First();
                     Customer customer = result;
-                
                     customerdb.Delete(id);
                     return true;
                 }

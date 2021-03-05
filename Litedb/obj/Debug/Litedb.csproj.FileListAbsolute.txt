@@ -16,3 +16,5 @@ C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\Litedb.csproj.CoreCompileInp
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\Litedb.csproj.CopyComplete
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\Litedb.exe
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\Litedb.pdb
+C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\HomeWindow.g.cs
+C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\HomeWindow.baml
