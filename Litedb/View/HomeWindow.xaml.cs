@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Litedb.Model;
 using Litedb.ViewModel;
 
@@ -35,7 +24,7 @@ namespace Litedb.View
                 Name = tb_name.Text,
                 Email = tb_email.Text,
                 Phone = tb_phone.Text,
-                Password = tb_password.Password,
+                Password = UserVM.GetMD5Hash(tb_password.Password),
                 Admin = tb_admin.Text
             };
             if (UserVMd.InsertUser(user))
@@ -53,12 +42,23 @@ namespace Litedb.View
         private void btnupdate_Click(object sender, RoutedEventArgs e)
         {
             UserVM UserVMd = new UserVM();
+            int id = 0;
+            try
+            {
+                id  = Int16.Parse(tb_id.Text);
+            }
+            catch
+            {
+                MessageBox.Show("User ID is unacceptable");
+            }
+
             User user = new User
             {
+                Id = id,
                 Name = tb_name.Text,
                 Email = tb_email.Text,
                 Phone = tb_phone.Text,
-                Password = tb_password.Password,
+                Password = UserVM.GetMD5Hash(tb_password.Password),
                 Admin = tb_admin.Text
             };
             if (UserVMd.UpdateUser(user))
@@ -90,6 +90,18 @@ namespace Litedb.View
         {
             UserVM UserVMd = new UserVM();
             datagrid.ItemsSource = UserVMd.GetUserList();
+        }
+
+        private void tb_id_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(tb_id.Text))
+            {
+                updategrid.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                updategrid.Visibility = Visibility.Visible;
+            }
         }
     }
 }

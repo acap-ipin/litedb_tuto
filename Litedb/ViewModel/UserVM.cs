@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Litedb.Model;
 using LiteDB;
 
 namespace Litedb.ViewModel
-{ 
+{
     class UserVM
     {
         public static string strcon = ConfigurationManager.AppSettings["connstring"];
@@ -24,6 +20,7 @@ namespace Litedb.ViewModel
                 var results = userdb.FindAll();
                 foreach (User u in results)
                 {
+                    u.Password = "xxxxxx";
                     userlist.Add(u);
                 }
                 return userlist;
@@ -54,15 +51,17 @@ namespace Litedb.ViewModel
             {
                 int id = user.Id;
                 var userdb = db.GetCollection<User>("users");
+                var result = userdb.Find(x => x.Id == id).First();
+                result = user;
+                userdb.Update(result);
                 try
                 {
-                    var result = userdb.Find(x => x.Id == id).First();
-                    result = user;
-                    userdb.Update(result);
+                    
                     return true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     return false;
                 }
             }
@@ -76,16 +75,30 @@ namespace Litedb.ViewModel
                 var userdb = db.GetCollection<User>("users");
                 try
                 {
-                    var result = userdb.Find(x => x.Id == id).FirstOrDefault();
+                    var result = userdb.Find(x => x.Id == id).First();
                     User user = result;
                     userdb.Delete(id);
                     return true;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
                     return false;
                 }
 
+            }
+        }
+
+        public static string GetMD5Hash(string text)
+        {
+            if (String.IsNullOrEmpty(text))
+                return String.Empty;
+
+            using (var sha = new System.Security.Cryptography.MD5CryptoServiceProvider())
+            {
+                byte[] textData = System.Text.Encoding.UTF8.GetBytes(text);
+                byte[] hash = sha.ComputeHash(textData);
+                return BitConverter.ToString(hash).Replace("-", String.Empty);
             }
         }
 

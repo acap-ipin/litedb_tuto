@@ -36,6 +36,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
             <TextBox x:Name="tb_id" Visibility="Collapsed"
+                     TextChanged="tb_id_TextChanged"
                      Text="{Binding ElementName=datagrid, Path=SelectedItem.Id, Mode=OneWay}" />
             <DockPanel>
                 <Label>Name</Label>
@@ -63,7 +64,7 @@
                          Text="{Binding ElementName=datagrid, Path=SelectedItem.Admin, Mode=OneWay}"/>
             </DockPanel>
             <Button x:Name="btninsert" Click="btninsert_Click">Insert</Button>
-            <Grid x:Name="updategrid">
+            <Grid x:Name="updategrid" Visibility="Hidden">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
