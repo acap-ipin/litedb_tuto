@@ -27,9 +27,9 @@ namespace Litedb.ViewModel
                     
                 }
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.ToString());
             }
             return userlist;
 

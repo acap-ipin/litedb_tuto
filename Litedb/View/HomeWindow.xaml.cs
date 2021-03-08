@@ -5,13 +5,15 @@ using System.Windows;
 using System.Windows.Data;
 using Litedb.Model;
 using Litedb.ViewModel;
+using Microsoft.Office.Interop.Excel;
+using Microsoft.Win32;
 
 namespace Litedb.View
 {
     /// <summary>
     /// Interaction logic for HomeWindow.xaml
     /// </summary>
-    public partial class HomeWindow : Window
+    public partial class HomeWindow : System.Windows.Window
     {
         private bool emailvalid = true;
         public HomeWindow()
@@ -203,6 +205,97 @@ namespace Litedb.View
             else
             {
                 return true;
+            }
+        }
+
+        private void btnexcel_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openfile = new OpenFileDialog();
+            openfile.DefaultExt = ".xlsx";
+            openfile.Filter = "(.xlsx)|*.xlsx";
+            //openfile.ShowDialog();
+
+            var browsefile = openfile.ShowDialog();
+
+            if (browsefile == true)
+            {
+                string txtFilePath = openfile.FileName;
+                Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
+                Workbook excelBook = excelApp.Workbooks.Open(txtFilePath, 0, true, 5, "", "", true, XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+                Worksheet excelSheet = (Worksheet)excelBook.Worksheets.get_Item(1); ;
+                Range excelRange = excelSheet.UsedRange;
+
+                int rowCnt = 0;
+                int colCnt = 0;
+                string th = ""; //table header
+                int thname = 0;
+                int themail = 0;
+                int thphone = 0;
+                int thpassword = 99;
+                int throle = 0;
+
+                for (colCnt = 1; colCnt <= excelRange.Columns.Count; colCnt++)
+                {
+                    th = (string)(excelRange.Cells[1, colCnt] as Range).Value2;
+                    if (th.Equals("name", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        thname = colCnt;
+                    }
+                    else if (th.Equals("email", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        themail = colCnt;
+                    }
+                    else if (th.Equals("phone", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        thphone = colCnt;
+                    }
+                    else if (th.Equals("password", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        thpassword = colCnt;
+                    }
+                    else if (th.Equals("role", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        throle = colCnt;
+                    }
+                }
+
+                for (rowCnt = 2; rowCnt <= excelRange.Rows.Count; rowCnt++)
+                {
+                    string cellname = Convert.ToString((excelRange.Cells[rowCnt, thname] as Range).Value2);
+                    string cellemail = Convert.ToString((excelRange.Cells[rowCnt, themail] as Range).Value2);
+                    string cellphone = Convert.ToString((excelRange.Cells[rowCnt, thphone] as Range).Value2);
+                    if (cellphone[0] != '0')
+                    {
+                        cellphone = "0" + cellphone;
+                    }
+                    string cellpassword = "password";
+                    if (thpassword != 99)
+                    {
+                        cellpassword = Convert.ToString((excelRange.Cells[rowCnt, thpassword] as Range).Value2);
+                    }
+                    string cellrole = Convert.ToString((excelRange.Cells[rowCnt, throle] as Range).Value2);
+
+                    User user = new User
+                    {
+                        Name = cellname,
+                        Email = cellemail,
+                        Phone = cellphone,
+                        Password = cellpassword,
+                        Admin = cellrole,
+                    };
+                    UserVM UserVMd = new UserVM();
+                    int masuk = UserVMd.InsertUser(user);
+                    if(masuk == 2)
+                    {
+                        MessageBox.Show("Data row:" + rowCnt + ", email: " + cellemail + " is skipped. Email already exists", "Fail", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+                MessageBox.Show("Data import successful", "Succesful", MessageBoxButton.OK, MessageBoxImage.Information);
+                loaddatagrid();
+            }
+            else
+            {
+                MessageBox.Show("Import excel: Browsefile cancelled", "Fail", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
     }

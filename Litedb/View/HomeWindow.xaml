@@ -86,6 +86,7 @@
                 <Button x:Name="btnupdate" Click="btnupdate_Click">Update</Button>
                 <Button x:Name="btndelete" Grid.Column="1" Click="btndelete_Click">Delete</Button>
             </Grid>
+            <Button x:Name="btnexcel" Click="btnexcel_Click" Margin="5,15,5,0">Import Excel</Button>
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Vertical">
             <TextBlock Margin="15,0,0,0" FontWeight="Bold">Select a user to edit</TextBlock>
