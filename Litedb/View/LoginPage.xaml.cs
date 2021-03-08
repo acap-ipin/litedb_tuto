@@ -29,10 +29,19 @@ namespace Litedb.View
 
         private void btn_login_Click(object sender, RoutedEventArgs e)
         {
-            Window homewindow = new HomeWindow();
-            
-            UserVM UserVMd = new UserVM();
             MessageBox.Show("clicked");
+
+            HomeWindow homewindow = new HomeWindow();
+            homewindow.Show();
+            //lepas2 ni tak kisah dulu
+
+
+
+
+
+
+
+            UserVM UserVMd = new UserVM();
             User user = UserVMd.GetUserByEmail(tb_email.Text);
             if (user == null)
             {
@@ -42,10 +51,13 @@ namespace Litedb.View
             if (pw.Equals(user.Password))
             {
                 MessageBox.Show("Login Successful");
-                //Window homewindow = new HomeWindow();
-                this.Close();
-                homewindow.Show();
-                
+                //Uri uri = new Uri("/Views/HomePage.xaml", UriKind.Relative);
+                //this.mainFrame.Navigate(new Uri("/Views/HomePage.xaml", UriKind.Relative));
+                //HomeWindow homewindow = new HomeWindow();
+                UserVM VM = new UserVM();
+                homewindow.DataContext = VM;
+                homewindow.ShowDialog();
+                //this.Close();
             }
         }
     }
