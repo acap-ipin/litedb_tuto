@@ -46,20 +46,25 @@ namespace Litedb.ViewModel
             }
         }
 
-        public bool InsertUser(User user)
+        public int InsertUser(User user)
         {
+            if (GetUserByEmail(user.Email) != null)
+            {
+                Console.WriteLine("User email has already been registered");
+                return 2;
+            }
             using (var db = new LiteDatabase(strcon))
             {
                 var userdb = db.GetCollection<User>("users");
                 try
                 {
                     userdb.Insert(user);
-                    return true;
+                    return 0;
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
-                    return false;
+                    return 1;
                 }
             }
         }

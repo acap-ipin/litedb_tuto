@@ -20,3 +20,4 @@ C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\HomeWindow.g.cs
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\HomeWindow.baml
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\LoginWindow.g.cs
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\LoginWindow.baml
+C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\GeneratedInternalTypeHelper.g.cs

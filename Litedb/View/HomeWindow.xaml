@@ -28,6 +28,9 @@
             <Setter Property="Margin" Value="5,5,10,0"/>
             <Setter Property="Height" Value="30" />
         </Style>
+        <local:AdminboolConverter x:Key="convert_admintobool"/>
+        <local:UserboolConverter x:Key="convert_usertobool"/>
+        <local:BooladminConverter x:Key="convert_booltoadmin"/>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -45,23 +48,34 @@
             </DockPanel>
             <DockPanel>
                 <Label>Email</Label>
-                <TextBox x:Name="tb_email" 
+                <TextBox x:Name="tb_email" LostFocus="tb_email_LostFocus"
                          Text="{Binding ElementName=datagrid, Path=SelectedItem.Email, Mode=OneWay}"/>
             </DockPanel>
             <DockPanel>
                 <Label>Phone</Label>
-                <TextBox x:Name="tb_phone" 
+                <TextBox x:Name="tb_phone" LostFocus="tb_phone_LostFocus"
                          Text="{Binding ElementName=datagrid, Path=SelectedItem.Phone, Mode=OneWay}"/>
             </DockPanel>
             <DockPanel>
                 <Label>Password</Label>
-                <Button x:Name="btnshow" DockPanel.Dock="Right">Show</Button>
-                <PasswordBox x:Name="tb_password"/>
+                <Button x:Name="btnshow" DockPanel.Dock="Right" PreviewMouseDown="btnshow_Click" PreviewMouseUp="btnshow_up">Show</Button>
+                <TextBox x:Name="tb_pw_show" Visibility="Collapsed"
+                         Width="{Binding ElementName=tb_password, Path=ActualWidth}"
+                         Margin="{Binding ElementName=tb_password, Path=Margin}"></TextBox>
+                <PasswordBox x:Name="tb_password" PasswordChanged="tb_password_PasswordChanged"/>
             </DockPanel>
             <DockPanel>
-                <Label>Admin</Label>
-                <TextBox x:Name="tb_admin" 
-                         Text="{Binding ElementName=datagrid, Path=SelectedItem.Admin, Mode=OneWay}"/>
+                <Label Margin="5,0">Role</Label>
+                <StackPanel Orientation="Horizontal" Margin="5,0" VerticalAlignment="Center">
+                    <RadioButton x:Name="admin" 
+                                 IsChecked="{Binding ElementName=datagrid, Path=SelectedItem.Admin, Converter={StaticResource convert_admintobool}, Mode=OneWay}"
+                                 >Admin</RadioButton>
+                    <RadioButton x:Name="user" 
+                                 IsChecked="{Binding ElementName=datagrid, Path=SelectedItem.Admin, Converter={StaticResource convert_usertobool}, Mode=OneWay}"
+                                 >User</RadioButton>
+                    <TextBox x:Name="tb_admin" Visibility="Collapsed" 
+                             Text="{Binding ElementName=admin, Path=IsChecked, Converter={StaticResource convert_booltoadmin}, Mode=OneWay}"/>
+                </StackPanel>
             </DockPanel>
             <Button x:Name="btninsert" Click="btninsert_Click">Insert</Button>
             <Grid x:Name="updategrid" Visibility="Hidden">
@@ -73,6 +87,9 @@
                 <Button x:Name="btndelete" Grid.Column="1" Click="btndelete_Click">Delete</Button>
             </Grid>
         </StackPanel>
-        <DataGrid Grid.Column="1" x:Name="datagrid" Margin="10,10"></DataGrid>
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            <TextBlock Margin="15,0,0,0" FontWeight="Bold">Select a user to edit</TextBlock>
+            <DataGrid x:Name="datagrid" Margin="10,10" IsReadOnly="True"></DataGrid>
+        </StackPanel>
     </Grid>
 </Window>

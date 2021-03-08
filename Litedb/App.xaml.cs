@@ -15,14 +15,12 @@ namespace Litedb
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            LoginWindow window = new LoginWindow();
-            //HomeWindow window = new HomeWindow();
-            UserVM VM = new UserVM();
-            window.DataContext = VM;
-            window.Show();
-        }
+        //protected override void OnStartup(StartupEventArgs e)
+        //{
+        //    base.OnStartup(e);
+        //    LoginWindow window = new LoginWindow();
+        //    //HomeWindow window = new HomeWindow();
+        //    window.Show();
+        //}
     }
 }

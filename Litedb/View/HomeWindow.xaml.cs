@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Data;
 using Litedb.Model;
 using Litedb.ViewModel;
 
@@ -10,16 +13,32 @@ namespace Litedb.View
     /// </summary>
     public partial class HomeWindow : Window
     {
+        private bool emailvalid = false;
         public HomeWindow()
         {
-            //UserVM VM = new UserVM();
-            //this.DataContext = VM;
-            InitializeComponent();
-            loaddatagrid();
+            try
+            {
+                InitializeComponent();
+                loaddatagrid();
+            }
+            catch
+            {
+                Console.WriteLine("Homewindow is accidentally invoked and failed to initialize");
+            }
+            
         }
 
         private void btninsert_Click(object sender, RoutedEventArgs e)
         {
+            if (!Formvalid())
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(tb_password.Password))
+            {
+                MessageBox.Show("Please fill in password");
+                return;
+            }
             UserVM UserVMd = new UserVM();
             User user = new User
             {
@@ -29,20 +48,28 @@ namespace Litedb.View
                 Password = UserVM.GetMD5Hash(tb_password.Password),
                 Admin = tb_admin.Text
             };
-            if (UserVMd.InsertUser(user))
+            int ralat = UserVMd.InsertUser(user);
+            switch (ralat)
             {
-                MessageBox.Show("Insert Success");
-                loaddatagrid();
-            }
-            else
-            {
-                MessageBox.Show("Insert failed");
+                case 0:
+                    MessageBox.Show("Insert Success");
+                    loaddatagrid();
+                    break;
+                case 1:
+                    MessageBox.Show("Insert failed. Refer logs");
+                    break;
+                case 2: MessageBox.Show("Insert failed. Email has already been registered");
+                    break;
             }
  
         }
 
         private void btnupdate_Click(object sender, RoutedEventArgs e)
         {
+            if (!Formvalid())
+            {
+                return;
+            }
             UserVM UserVMd = new UserVM();
             int id = 0;
             try
@@ -66,7 +93,7 @@ namespace Litedb.View
             if (UserVMd.UpdateUser(user))
             {
                 MessageBox.Show("Update Success");
-                loaddatagrid();
+                loaddatagrid(); //refreshing datagrid causes the binded textbox to refresh
             }
             else
             {
@@ -92,6 +119,7 @@ namespace Litedb.View
         {
             UserVM UserVMd = new UserVM();
             datagrid.ItemsSource = UserVMd.GetUserList();
+            tb_password.Password = "";
         }
 
         private void tb_id_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
@@ -104,6 +132,142 @@ namespace Litedb.View
             {
                 updategrid.Visibility = Visibility.Visible;
             }
+            tb_password.Password = "";
+        }
+
+        private void btnshow_Click(object sender, RoutedEventArgs e)
+        {
+            tb_password.Visibility = Visibility.Collapsed;
+            tb_pw_show.Visibility = Visibility.Visible;
+        }
+
+        private void btnshow_up(object sender, RoutedEventArgs e)
+        {
+            tb_password.Visibility = Visibility.Visible;
+            tb_pw_show.Visibility = Visibility.Collapsed;
+        }
+
+        private void tb_password_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            tb_pw_show.Text = tb_password.Password;
+        }
+        private void tb_phone_LostFocus(object sender, RoutedEventArgs e)
+        {
+            string phonestr = tb_phone.Text;
+            phonestr = Regex.Replace(phonestr, "[^0-9]", "");
+            if (!phonestr.Equals(tb_phone.Text))
+            {
+                MessageBox.Show("Only use numbers in the phone field", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void tb_email_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if ((!string.IsNullOrEmpty(tb_email.Text)) && (!Regex.IsMatch(tb_email.Text, @"^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$")))
+            {
+                MessageBox.Show("Please enter a valid email format", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                emailvalid = false;
+            }
+            else
+            {
+                emailvalid = true;
+            }
+        }
+
+        private bool Formvalid()
+        {
+            if (string.IsNullOrEmpty(tb_name.Text))
+            {
+                MessageBox.Show("Please enter name", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else if (string.IsNullOrEmpty(tb_email.Text))
+            {
+                MessageBox.Show("Please enter email", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else if (string.IsNullOrEmpty(tb_phone.Text))
+            {
+                MessageBox.Show("Please enter phone number", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else if (string.IsNullOrEmpty(tb_admin.Text))
+            {
+                MessageBox.Show("Please choose a role", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else if (!emailvalid)
+            {
+                MessageBox.Show("Please use correct format for email", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    public class AdminboolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            switch (value.ToString().ToLower())
+            {
+                case "admin":
+                    return true;
+                case "user":
+                    return false;
+            }
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return false;
+        }
+    }
+
+    public class UserboolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            switch (value.ToString().ToLower())
+            {
+                case "user":
+                    return true;
+                case "admin":
+                    return false;
+            }
+            return false;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return false;
+        }
+    }
+
+    public class BooladminConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is bool)
+            {
+                if ((bool)value == true)
+                {
+                    return "admin";
+                }
+                else
+                {
+                    return "user";
+                }
+            }
+            return "user";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return false;
         }
     }
 }

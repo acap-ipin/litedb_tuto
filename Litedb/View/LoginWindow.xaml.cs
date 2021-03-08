@@ -22,6 +22,7 @@ namespace Litedb.View
     /// </summary>
     public partial class LoginWindow : Window
     {
+        Window homewindow = new HomeWindow();
         public LoginWindow()
         {
             InitializeComponent();
@@ -29,10 +30,8 @@ namespace Litedb.View
 
         private void btn_login_Click(object sender, RoutedEventArgs e)
         {
-            Window homewindow = new HomeWindow();
-            
+            //Window homewindow = new HomeWindow();
             UserVM UserVMd = new UserVM();
-            MessageBox.Show("clicked");
             User user = UserVMd.GetUserByEmail(tb_email.Text);
             if (user == null)
             {
@@ -42,11 +41,16 @@ namespace Litedb.View
             string pw = UserVM.GetMD5Hash(tb_pw.Password);
             if (pw.Equals(user.Password))
             {
-                MessageBox.Show("Login Successful");
                 //Window homewindow = new HomeWindow();
+                MessageBox.Show("Login Successful");
                 this.Close();
                 homewindow.Show();
-                
+            }
+            else
+            {
+                //password is wrong
+                MessageBox.Show("Password incorrect");
+                return;
             }
         }
     }
