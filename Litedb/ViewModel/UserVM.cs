@@ -27,6 +27,25 @@ namespace Litedb.ViewModel
             }
         }
 
+        public User GetUserByEmail(string email)
+        {
+            using (var db = new LiteDatabase(strcon))
+            {
+                User user = new User();
+                var userdb = db.GetCollection<User>("users");
+                try
+                {
+                    var result = userdb.Find(x => x.Email == email).First();
+                    user = result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("User email not found" + e.ToString());
+                }
+                return user;
+            }
+        }
+
         public bool InsertUser(User user)
         {
             using (var db = new LiteDatabase(strcon))

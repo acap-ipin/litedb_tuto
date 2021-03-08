@@ -18,7 +18,8 @@ namespace Litedb
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            HomeWindow window = new HomeWindow();
+            LoginWindow window = new LoginWindow();
+            //HomeWindow window = new HomeWindow();
             UserVM VM = new UserVM();
             window.DataContext = VM;
             window.Show();

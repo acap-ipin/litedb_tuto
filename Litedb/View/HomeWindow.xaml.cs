@@ -12,6 +12,8 @@ namespace Litedb.View
     {
         public HomeWindow()
         {
+            //UserVM VM = new UserVM();
+            //this.DataContext = VM;
             InitializeComponent();
             loaddatagrid();
         }
