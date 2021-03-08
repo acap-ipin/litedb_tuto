@@ -37,6 +37,7 @@ namespace Litedb.View
             if (user == null)
             {
                 MessageBox.Show("User Email not found");
+                return;
             }
             string pw = UserVM.GetMD5Hash(tb_pw.Password);
             if (pw.Equals(user.Password))

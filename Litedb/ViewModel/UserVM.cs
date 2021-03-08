@@ -31,7 +31,7 @@ namespace Litedb.ViewModel
         {
             using (var db = new LiteDatabase(strcon))
             {
-                User user = new User();
+                User user = null;
                 var userdb = db.GetCollection<User>("users");
                 try
                 {
