@@ -11,39 +11,47 @@ namespace Litedb.ViewModel
     {
         public static string strcon = ConfigurationManager.AppSettings["connstring"];
         
-        public IList<User> GetUserList()
+        public IList<User2> GetUserList()
         {
-            var userlist = new List<User>();
-            using (var db = new LiteDatabase(strcon))
+            var userlist = new List<User2>();
+            try
             {
-                var userdb = db.GetCollection<User>("users");
-                var results = userdb.FindAll();
-                foreach (User u in results)
+                using (var db = new LiteDatabase(strcon))
                 {
-                    u.Password = "xxxxxx";
-                    userlist.Add(u);
+                    var userdb = db.GetCollection<User2>("users");
+                    var results = userdb.FindAll();
+                    foreach (User2 u in results)
+                    {
+                        userlist.Add(u);
+                    }
+                    
                 }
-                return userlist;
             }
+            catch
+            {
+
+            }
+            return userlist;
+
         }
 
         public User GetUserByEmail(string email)
         {
-            using (var db = new LiteDatabase(strcon))
+            User user = null;
+            try
             {
-                User user = null;
-                var userdb = db.GetCollection<User>("users");
-                try
+                using (var db = new LiteDatabase(strcon))
                 {
+                    var userdb = db.GetCollection<User>("users");
                     var result = userdb.Find(x => x.Email == email).First();
                     user = result;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("User email not found" + e.ToString());
-                }
-                return user;
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("User email not found" + e.ToString());
+            }
+            return user;
         }
 
         public int InsertUser(User user)
@@ -53,63 +61,66 @@ namespace Litedb.ViewModel
                 Console.WriteLine("User email has already been registered");
                 return 2;
             }
-            using (var db = new LiteDatabase(strcon))
+            try
             {
-                var userdb = db.GetCollection<User>("users");
-                try
+                using (var db = new LiteDatabase(strcon))
                 {
+                    var userdb = db.GetCollection<User>("users");
                     userdb.Insert(user);
                     return 0;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    return 1;
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return 1;
             }
         }
 
         public bool UpdateUser(User user)
         {
-            using (var db = new LiteDatabase(strcon))
+            try
             {
-                int id = user.Id;
-                var userdb = db.GetCollection<User>("users");
-                var result = userdb.Find(x => x.Id == id).First();
-                result = user;
-                userdb.Update(result);
-                try
+                using (var db = new LiteDatabase(strcon))
                 {
-                    
+                    int id = user.Id;
+                    var userdb = db.GetCollection<User>("users");
+
+                    var result = userdb.Find(x => x.Id == id).First();
+                    if (string.IsNullOrEmpty(user.Password))
+                    {
+                        user.Password = result.Password;
+                    }
+                    result = user;
+                    userdb.Update(result);
                     return true;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    return false;
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
             }
         }
 
         public bool DeleteUser(string id2)
         {
             int id = Int16.Parse(id2);
-            using (var db = new LiteDatabase(strcon))
+            try
             {
-                var userdb = db.GetCollection<User>("users");
-                try
+                using (var db = new LiteDatabase(strcon))
                 {
+                    var userdb = db.GetCollection<User>("users");
                     var result = userdb.Find(x => x.Id == id).First();
                     User user = result;
                     userdb.Delete(id);
                     return true;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    return false;
-                }
-
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
             }
         }
 

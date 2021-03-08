@@ -13,7 +13,7 @@ namespace Litedb.View
     /// </summary>
     public partial class HomeWindow : Window
     {
-        private bool emailvalid = false;
+        private bool emailvalid = true;
         public HomeWindow()
         {
             try

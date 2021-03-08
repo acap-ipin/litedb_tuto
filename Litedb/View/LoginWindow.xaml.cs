@@ -38,6 +38,10 @@ namespace Litedb.View
                 MessageBox.Show("User Email not found");
                 return;
             }
+            if (!user.Admin.Equals("admin")){
+                MessageBox.Show("Only admin login is allowed");
+                return;
+            }
             string pw = UserVM.GetMD5Hash(tb_pw.Password);
             if (pw.Equals(user.Password))
             {

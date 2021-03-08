@@ -61,6 +61,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\User.cs" />
+    <Compile Include="Model\User2.cs" />
     <Compile Include="ViewModel\UserVM.cs" />
     <Compile Include="View\HomeWindow.xaml.cs">
       <DependentUpon>HomeWindow.xaml</DependentUpon>
