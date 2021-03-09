@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Litedb.View"
         mc:Ignorable="d"
-        Title="Litedb_tutorial" Height="200" Width="250">
+        Title="Litedb_tutorial" Height="250" Width="250">
     <StackPanel VerticalAlignment="Center">
         <TextBlock Text="Email" Margin="5,10,5,0"/>
         <TextBox x:Name="tb_email" Margin="5,10"/>

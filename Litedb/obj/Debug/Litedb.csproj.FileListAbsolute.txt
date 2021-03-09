@@ -21,3 +21,14 @@ C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\HomeWindow.baml
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\LoginWindow.g.cs
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\View\LoginWindow.baml
 C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\ControlzEx.dll
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\MahApps.Metro.dll
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\ControlzEx.pdb
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\ControlzEx.xml
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\MahApps.Metro.pdb
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\MahApps.Metro.xml
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Users\asraf\source\repos\Litedb\Litedb\bin\Debug\de\MahApps.Metro.resources.dll
+C:\Users\asraf\source\repos\Litedb\Litedb\obj\Debug\App.baml
