@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Litedb.Model;
 using Litedb.ViewModel;
 using System.Windows.Navigation;
+using MahApps.Metro.Controls;
 
 namespace Litedb.View
 {
@@ -24,7 +25,10 @@ namespace Litedb.View
     {
         public LoginPage()
         {
-            InitializeComponent();
+            MainWindow window = (MainWindow)Application.Current.MainWindow;
+            window.Height = 270;
+            window.Width = 270;
+            InitializeComponent();            
         }
 
         private void btn_login_Click(object sender, RoutedEventArgs e)

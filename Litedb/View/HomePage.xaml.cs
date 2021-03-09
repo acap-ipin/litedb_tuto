@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 using Litedb.Model;
 using Litedb.ViewModel;
+using MahApps.Metro.Controls;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Win32;
 
@@ -18,7 +19,9 @@ namespace Litedb.View
         private bool emailvalid = true;
         public HomePage()
         {
-           
+            MainWindow window = (MainWindow)System.Windows.Application.Current.MainWindow;
+            window.Height = 450;
+            window.Width = 800;
             InitializeComponent();
             loaddatagrid();
         }
@@ -98,16 +101,26 @@ namespace Litedb.View
 
         private void btndelete_Click(object sender, RoutedEventArgs e)
         {
-            UserVM UserVMd = new UserVM();
-            if (UserVMd.DeleteUser(tb_id.Text))
+            MessageBoxResult messageBoxResult = //message, title, button(YesNoCancel), icon
+                System.Windows.MessageBox.Show("Are you sure to delete this user?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (messageBoxResult == MessageBoxResult.Yes)
             {
-                MessageBox.Show("Delete Success");
-                loaddatagrid();
+                UserVM UserVMd = new UserVM();
+                if (UserVMd.DeleteUser(tb_id.Text))
+                {
+                    MessageBox.Show("Delete Success");
+                    loaddatagrid();
+                }
+                else
+                {
+                    MessageBox.Show("Delete failed");
+                }
             }
             else
             {
-                MessageBox.Show("Delete failed");
+                return;
             }
+               
         }
 
         private void loaddatagrid()
@@ -300,7 +313,15 @@ namespace Litedb.View
 
         private void btn_back_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.GoBack();
+            try
+            {
+                this.NavigationService.GoBack();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            
         }
     }
 

@@ -1,20 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Configuration;
-using LiteDB;
-using System.Data;
 using MahApps.Metro.Controls;
 
 namespace Litedb
@@ -31,6 +15,20 @@ namespace Litedb
         {
             InitializeComponent();
             this.mainframe.Navigate(new Uri("/View/LoginPage.xaml", UriKind.Relative));
+        }
+
+        public void NavLoginPage()
+        {
+            this.Height = 270;
+            this.Width = 270;
+            
+        }
+
+        public void NavHomePage()
+        {
+            this.Height = 430;
+            this.Width = 800;
+            this.mainframe.Navigate(new Uri("/View/HomePage.xaml", UriKind.Relative));
         }
     }
 }
