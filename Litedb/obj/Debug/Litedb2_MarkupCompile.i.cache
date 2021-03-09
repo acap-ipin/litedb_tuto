@@ -1,4 +1,4 @@
-﻿Litedb
+﻿Litedb2
 
 
 winexe
@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\asraf\source\repos\Litedb\Litedb\App.xaml
-3368504453
+31568443509
 
-101412132903
+11-1556164018
 126-917953702
-MainWindow.xaml;View\HomeWindow.xaml;View\LoginWindow.xaml;
+MainWindow.xaml;View\HomePage.xaml;View\LoginPage.xaml;
 
-False
+True
 

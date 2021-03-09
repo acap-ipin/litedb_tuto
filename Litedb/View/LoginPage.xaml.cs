@@ -20,44 +20,39 @@ namespace Litedb.View
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginPage : Page
     {
-        public LoginWindow()
+        public LoginPage()
         {
             InitializeComponent();
         }
 
         private void btn_login_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("clicked");
-
-            HomeWindow homewindow = new HomeWindow();
-            homewindow.Show();
-            //lepas2 ni tak kisah dulu
-
-
-
-
-
-
-
+            //Window homewindow = new HomeWindow();
             UserVM UserVMd = new UserVM();
             User user = UserVMd.GetUserByEmail(tb_email.Text);
             if (user == null)
             {
                 MessageBox.Show("User Email not found");
+                return;
+            }
+            if (!user.Admin.Equals("admin")){
+                MessageBox.Show("Only admin login is allowed");
+                return;
             }
             string pw = UserVM.GetMD5Hash(tb_pw.Password);
             if (pw.Equals(user.Password))
             {
                 MessageBox.Show("Login Successful");
-                //Uri uri = new Uri("/Views/HomePage.xaml", UriKind.Relative);
-                //this.mainFrame.Navigate(new Uri("/Views/HomePage.xaml", UriKind.Relative));
-                //HomeWindow homewindow = new HomeWindow();
-                UserVM VM = new UserVM();
-                homewindow.DataContext = VM;
-                homewindow.ShowDialog();
-                //this.Close();
+                Uri uri = new Uri("/View/HomePage.xaml", UriKind.Relative);
+                this.NavigationService.Navigate(uri);
+            }
+            else
+            {
+                //password is wrong
+                MessageBox.Show("Password incorrect");
+                return;
             }
         }
     }

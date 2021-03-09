@@ -1,11 +1,11 @@
-﻿<Window x:Class="Litedb.View.LoginWindow"
+﻿<Page x:Class="Litedb.View.LoginPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Litedb.View"
         mc:Ignorable="d"
-        Title="Litedb_tutorial" Height="200" Width="250">
+        Title="Litedb_tutorial" Height="250" Width="250">
     <StackPanel VerticalAlignment="Center">
         <TextBlock Text="Email" Margin="5,10,5,0"/>
         <TextBox x:Name="tb_email" Margin="5,10"/>
@@ -13,6 +13,8 @@
         <PasswordBox x:Name="tb_pw" Margin="5,10">
             
         </PasswordBox>
-        <Button x:Name="btn_login" Margin="60,15" Click="btn_login_Click">Login</Button>
+        <Button x:Name="btn_login" Margin="60,15" Click="btn_login_Click"
+                Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
+                >Login</Button>
     </StackPanel>
-</Window>
+</Page>
