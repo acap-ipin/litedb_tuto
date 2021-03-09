@@ -267,7 +267,7 @@ namespace Litedb.View
                     {
                         cellphone = "0" + cellphone;
                     }
-                    string cellpassword = "password";
+                    string cellpassword = UserVM.GetMD5Hash("password");
                     if (thpassword != 99)
                     {
                         cellpassword = Convert.ToString((excelRange.Cells[rowCnt, thpassword] as Range).Value2);
